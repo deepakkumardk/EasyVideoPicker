@@ -32,5 +32,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
         android:background="@color/colorPrimary"
-        android:src="@drawable/ic_check" />
+        android:src="@drawable/ic_done" />
 </android.support.design.widget.CoordinatorLayout>

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.deepakkumardk.videopickerlib.EasyVideoPicker
 import com.deepakkumardk.videopickerlib.model.VideoPickerItem
-import com.deepakkumardk.videopickerlib.util.log
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,13 +20,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openVideoPicker() {
-        EasyVideoPicker().startPickerForResult(this, VideoPickerItem(), 2001)
+        val item = VideoPickerItem().apply {
+            debugMode = true
+            themeResId = R.style.CustomTheme
+        }
+        EasyVideoPicker().startPickerForResult(this, item, 2001)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 2001 && resultCode == Activity.RESULT_OK && data != null) {
-            log("hellllooooooooooo")
+            val list = EasyVideoPicker.getSelectedVideos(data)
+            var text = ""
+            list?.forEach {
+                text += "${it.videoPath} \n"
+            }
+            text_video_path.text = text
         }
     }
 }

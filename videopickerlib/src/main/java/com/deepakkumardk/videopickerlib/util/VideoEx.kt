@@ -8,15 +8,15 @@ import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.onComplete
 
 private val VIDEO_URI: Uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+private val THUMB_ID: String = MediaStore.Video.Media.MINI_THUMB_MAGIC
+private val THUMB_MINI: Int = MediaStore.Video.Thumbnails.MINI_KIND
 
 class VideoEx {
 
     fun getAllVideos(activity: Activity?, onCompleted: (MutableList<VideoModel>) -> Unit) {
         val startTime = System.currentTimeMillis()
 
-        val projection = arrayOf(
-            VIDEO_DISPLAY_NAME, VIDEO_DATA
-        )
+        val projection = arrayOf(VIDEO_DISPLAY_NAME, VIDEO_DATA)
 
         var count = 0
         val videoMap = mutableMapOf<String, VideoModel>()
@@ -29,6 +29,7 @@ class VideoEx {
                 val idIndex = it.getColumnIndex(VIDEO_ID)
                 val nameIndex = it.getColumnIndex(VIDEO_DISPLAY_NAME)
                 val dataIndex = it.getColumnIndex(VIDEO_DATA)
+                val uriIndex = it.getColumnIndex(MediaStore.Video.Thumbnails.DATA)
 
                 var id: String
                 var name: String
@@ -42,15 +43,7 @@ class VideoEx {
 //                    model.id = id
                     model.folderName = name
                     model.videoPath = path
-
-                    /*if (contactMap[id] != null) {
-                        val list = contactMap[id]?.contactNumberList!!
-                        if (!list.contains(number))
-                            list.add(number)
-                        contacts.contactNumberList = list
-                    } else {
-                        contactMap[id] = contacts
-                    }*/
+                    model.uriStr = it.getString(uriIndex)
                     videoMap[count++.toString()] = model
                 }
                 it.close()
@@ -69,10 +62,8 @@ class VideoEx {
         videoMap.entries.forEach {
             val model = it.value
 
-//            val photoUri = getContactImageUri(contact.id?.toLong()!!)
-
             val newModel = VideoModel(
-                model.id, model.folderName, model.videoPath, false, null
+                model.id, model.folderName, model.videoPath, false, model.uriStr, null
             )
             myVideosList.add(newModel)
         }

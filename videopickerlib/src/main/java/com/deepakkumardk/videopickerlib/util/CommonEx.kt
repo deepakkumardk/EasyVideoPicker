@@ -2,6 +2,9 @@ package com.deepakkumardk.videopickerlib.util
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.provider.MediaStore
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -20,6 +23,10 @@ fun RecyclerView.init(context: Context) {
         hasFixedSize()
         layoutManager = GridLayoutManager(context, 3)
     }
+}
+
+fun getVideoThumbUri(videoPath: String): Bitmap? {
+    return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MICRO_KIND)
 }
 
 fun Activity?.applyCustomTheme(themeId: Int?) {

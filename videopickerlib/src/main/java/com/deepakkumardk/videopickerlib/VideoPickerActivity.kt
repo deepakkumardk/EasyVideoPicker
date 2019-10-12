@@ -14,7 +14,6 @@ import com.deepakkumardk.videopickerlib.util.*
 import kotlinx.android.synthetic.main.activity_video_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
 class VideoPickerActivity : AppCompatActivity() {
@@ -22,14 +21,17 @@ class VideoPickerActivity : AppCompatActivity() {
     private var itemList: MutableList<VideoModel> = mutableListOf()
     private var selectedVideos: MutableList<VideoModel> = ArrayList()
 
-    private var debugMode = true
+    private var debugMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyCustomTheme(VideoPickerUI.getTheme())
         setContentView(R.layout.activity_video_picker)
 
-        videoAdapter = VideoPickerAdapter(itemList) { model, position, view ->
-            onImageClick(model, position, view)
+        initToolbar()
+        debugMode = VideoPickerUI.getDebugMode()
+        videoAdapter = VideoPickerAdapter(itemList) { model, position, view, opacityView ->
+            onItemClick(model, position, view, opacityView)
         }
 
         recycler_view.apply {
@@ -47,9 +49,30 @@ class VideoPickerActivity : AppCompatActivity() {
         }
     }
 
+    private fun initToolbar() {
+        supportActionBar?.title = "0 Selected"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
+    }
+
+    private fun setSubtitle() {
+        supportActionBar?.title = "${getSelectedVideos().size} Selected"
+    }
+
     @Suppress("UNUSED_PARAMETER")
-    private fun onImageClick(model: VideoModel, position: Int, view: View) {
-        toast("hello onClick")
+    private fun onItemClick(model: VideoModel, position: Int, view: View, opactiyView: View) {
+        model.isSelected = !model.isSelected
+        view.isSelected = model.isSelected
+        opactiyView.isSelected = model.isSelected
+        when (model.isSelected) {
+            true -> {
+                selectedVideos.add(model)
+            }
+            false -> {
+                selectedVideos.remove(model)
+            }
+        }
+        setSubtitle()
     }
 
     private fun checkPermission() {
@@ -120,7 +143,7 @@ class VideoPickerActivity : AppCompatActivity() {
                 log("Fetching Completed in $fetchingTime ms")
             }
             progress_bar.hide()
-//            setSubtitle()
+            setSubtitle()
             videoAdapter.notifyDataSetChanged()
         }
     }

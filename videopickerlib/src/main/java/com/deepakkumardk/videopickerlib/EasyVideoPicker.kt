@@ -3,6 +3,7 @@ package com.deepakkumardk.videopickerlib
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
+import com.deepakkumardk.videopickerlib.model.VideoModel
 import com.deepakkumardk.videopickerlib.model.VideoPickerItem
 import com.deepakkumardk.videopickerlib.util.EXTRA_SELECTED_VIDEOS
 import com.deepakkumardk.videopickerlib.util.VideoPickerUI
@@ -34,8 +35,8 @@ class EasyVideoPicker {
         /**
          * returns selected list of VideoModel
          */
-        fun getSelectedVideos(data: Intent?): ArrayList<String>? {
-            return data?.getStringArrayListExtra(EXTRA_SELECTED_VIDEOS)
+        fun getSelectedVideos(data: Intent?): ArrayList<VideoModel>? {
+            return data?.getParcelableArrayListExtra(EXTRA_SELECTED_VIDEOS)
         }
 
     }

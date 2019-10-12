@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomTheme">
+        <item name="colorPrimary">#03A9F4</item>
+        <item name="colorPrimaryDark">#2E718F</item>
+        <item name="colorAccent">#F13F06</item>
+    </style>
 </resources>

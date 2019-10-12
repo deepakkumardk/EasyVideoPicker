@@ -13,14 +13,13 @@
         tools:src="@color/colorAccent" />
 
     <View
-        android:id="@+id/opacity"
+        android:id="@+id/image_opacity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/image_opacity"
-        android:visibility="gone" />
+        android:background="@drawable/image_opacity" />
 
     <ImageView
-        android:id="@+id/imgCheck"
+        android:id="@+id/image_check"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="4dp"
