@@ -1,0 +1,2 @@
+include ':app', ':videopickerlib'
+rootProject.name='EasyVideoPicker'
