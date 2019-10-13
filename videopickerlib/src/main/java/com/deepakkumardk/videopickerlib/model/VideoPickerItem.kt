@@ -7,4 +7,6 @@ class VideoPickerItem {
     var showIcon = false
     var timeLimit: Long? = null
     var sizeLimit: Long? = null
+
+    var selectionMode : SelectionMode = SelectionMode.Multiple
 }

@@ -10,11 +10,13 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
+import com.deepakkumardk.videopickerlib.model.SelectionMode
 import com.deepakkumardk.videopickerlib.model.VideoModel
 import com.deepakkumardk.videopickerlib.util.*
 import kotlinx.android.synthetic.main.activity_video_picker.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
 class VideoPickerActivity : AppCompatActivity() {
@@ -71,15 +73,40 @@ class VideoPickerActivity : AppCompatActivity() {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun onItemClick(model: VideoModel, position: Int, view: View, opactiyView: View) {
+    private fun onItemClick(model: VideoModel, position: Int, view: View, opacityView: View) {
+        when (VideoPickerUI.getPickerItem().selectionMode) {
+            is SelectionMode.Single -> {
+                if (selectedVideos.size >= 1) {
+                    toast("You can't select more than 1 video")
+                    return
+                } else {
+                    addSelectedItem(model, view, opacityView)
+                }
+            }
+            is SelectionMode.Multiple -> {
+                addSelectedItem(model, view, opacityView)
+            }
+            is SelectionMode.Custom -> {
+                val custom = VideoPickerUI.getPickerItem().selectionMode as SelectionMode.Custom
+                if (selectedVideos.size >= custom.limit) {
+                    toast("You can't select more than ${custom.limit} videos")
+                    return
+                } else {
+                    addSelectedItem(model, view, opacityView)
+                }
+            }
+        }
+        setSubtitle()
+    }
+
+    private fun addSelectedItem(model: VideoModel, view: View, opacityView: View) {
         model.isSelected = !model.isSelected
         view.isSelected = model.isSelected
-        opactiyView.isSelected = model.isSelected
+        opacityView.isSelected = model.isSelected
         when (model.isSelected) {
             true -> selectedVideos.add(model)
             false -> selectedVideos.remove(model)
         }
-        setSubtitle()
     }
 
     private fun checkPermission() {

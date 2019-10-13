@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.deepakkumardk.videopickerlib.EasyVideoPicker
+import com.deepakkumardk.videopickerlib.model.SelectionMode
 import com.deepakkumardk.videopickerlib.model.VideoPickerItem
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
@@ -15,9 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btn_open_picker.setOnClickListener {
-            openVideoPicker()
-        }
+        btn_open_picker.setOnClickListener { openVideoPicker() }
     }
 
     private fun openVideoPicker() {
@@ -25,8 +24,9 @@ class MainActivity : AppCompatActivity() {
             showIcon = true
             debugMode = true
             themeResId = R.style.CustomTheme
-//            timeLimit = TimeUnit.MINUTES.toMillis(2)
-//            sizeLimit = 10*1024*1024
+            timeLimit = TimeUnit.MINUTES.toMillis(2)
+            sizeLimit = 10 * 1024 * 1024
+            selectionMode = SelectionMode.Custom(2)
         }
         EasyVideoPicker().startPickerForResult(this, item, 2001)
     }
