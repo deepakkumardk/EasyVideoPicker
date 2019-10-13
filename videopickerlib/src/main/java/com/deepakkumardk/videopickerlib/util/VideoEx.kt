@@ -16,7 +16,7 @@ class VideoEx {
     fun getAllVideos(activity: Activity?, onCompleted: (MutableList<VideoModel>) -> Unit) {
         val startTime = System.currentTimeMillis()
 
-        val projection = arrayOf(VIDEO_DISPLAY_NAME, VIDEO_DATA)
+        val projection = arrayOf(VIDEO_DISPLAY_NAME, VIDEO_DATA, VIDEO_DURATION)
 
         var count = 0
         val videoMap = mutableMapOf<String, VideoModel>()
@@ -29,22 +29,28 @@ class VideoEx {
                 val idIndex = it.getColumnIndex(VIDEO_ID)
                 val nameIndex = it.getColumnIndex(VIDEO_DISPLAY_NAME)
                 val dataIndex = it.getColumnIndex(VIDEO_DATA)
+                val durationIndex = it.getColumnIndex(VIDEO_DURATION)
                 val uriIndex = it.getColumnIndex(MediaStore.Video.Thumbnails.DATA)
 
                 var id: String
                 var name: String
                 var path: String
+                var duration: Long
                 while (it.moveToNext()) {
                     val model = VideoModel()
 //                    id = it.getString(idIndex)
                     name = it.getString(nameIndex)
                     path = it.getString(dataIndex)
+                    duration = it.getLong(durationIndex)
 
 //                    model.id = id
                     model.folderName = name
                     model.videoPath = path
                     model.uriStr = it.getString(uriIndex)
-                    videoMap[count++.toString()] = model
+
+                    val timeLimit = VideoPickerUI.getPickerItem().timeLimit
+                    if (duration <= timeLimit)
+                        videoMap[count++.toString()] = model
                 }
                 it.close()
             }

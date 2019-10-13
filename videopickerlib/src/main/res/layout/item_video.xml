@@ -22,10 +22,17 @@
         android:id="@+id/image_check"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_margin="4dp"
         android:src="@drawable/check_selector"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/small_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="4dp"
+        android:src="@color/colorWhite"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

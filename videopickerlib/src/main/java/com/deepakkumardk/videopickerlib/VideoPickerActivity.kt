@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import com.deepakkumardk.videopickerlib.model.VideoModel
 import com.deepakkumardk.videopickerlib.util.*
@@ -59,18 +60,24 @@ class VideoPickerActivity : AppCompatActivity() {
         supportActionBar?.title = "${getSelectedVideos().size} Selected"
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     @Suppress("UNUSED_PARAMETER")
     private fun onItemClick(model: VideoModel, position: Int, view: View, opactiyView: View) {
         model.isSelected = !model.isSelected
         view.isSelected = model.isSelected
         opactiyView.isSelected = model.isSelected
         when (model.isSelected) {
-            true -> {
-                selectedVideos.add(model)
-            }
-            false -> {
-                selectedVideos.remove(model)
-            }
+            true -> selectedVideos.add(model)
+            false -> selectedVideos.remove(model)
         }
         setSubtitle()
     }

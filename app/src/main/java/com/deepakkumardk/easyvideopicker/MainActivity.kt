@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import com.deepakkumardk.videopickerlib.EasyVideoPicker
 import com.deepakkumardk.videopickerlib.model.VideoPickerItem
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun openVideoPicker() {
         val item = VideoPickerItem().apply {
+            showIcon = true
             debugMode = true
             themeResId = R.style.CustomTheme
+            timeLimit = TimeUnit.MINUTES.toMillis(2)
         }
         EasyVideoPicker().startPickerForResult(this, item, 2001)
     }

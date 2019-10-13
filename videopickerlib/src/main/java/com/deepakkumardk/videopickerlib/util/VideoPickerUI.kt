@@ -15,4 +15,6 @@ object VideoPickerUI {
 
     fun getTheme() = videoPickerItem.themeResId
 
+    fun getShowIcon() = videoPickerItem.showIcon
+
 }
