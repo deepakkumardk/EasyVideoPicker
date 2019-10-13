@@ -16,10 +16,10 @@ class VideoEx {
     fun getAllVideos(activity: Activity?, onCompleted: (MutableList<VideoModel>) -> Unit) {
         val startTime = System.currentTimeMillis()
 
-        val projection = arrayOf(VIDEO_DISPLAY_NAME, VIDEO_DATA, VIDEO_DURATION)
+        val projection =
+            arrayOf(VIDEO_ID, VIDEO_DISPLAY_NAME, VIDEO_DATA, VIDEO_DURATION, VIDEO_SIZE)
 
-        var count = 0
-        val videoMap = mutableMapOf<String, VideoModel>()
+        val videoMap = mutableMapOf<Long, VideoModel>()
         val cr = activity?.contentResolver
         doAsyncResult {
             cr?.query(
@@ -30,27 +30,34 @@ class VideoEx {
                 val nameIndex = it.getColumnIndex(VIDEO_DISPLAY_NAME)
                 val dataIndex = it.getColumnIndex(VIDEO_DATA)
                 val durationIndex = it.getColumnIndex(VIDEO_DURATION)
-                val uriIndex = it.getColumnIndex(MediaStore.Video.Thumbnails.DATA)
+                val sizeIndex = it.getColumnIndex(VIDEO_SIZE)
 
-                var id: String
-                var name: String
-                var path: String
-                var duration: Long
                 while (it.moveToNext()) {
                     val model = VideoModel()
-//                    id = it.getString(idIndex)
-                    name = it.getString(nameIndex)
-                    path = it.getString(dataIndex)
-                    duration = it.getLong(durationIndex)
+                    val id = it.getLong(idIndex)
+                    val name = it.getString(nameIndex)
+                    val path = it.getString(dataIndex)
+                    val duration = it.getLong(durationIndex)
+                    val size = it.getLong(sizeIndex)
 
-//                    model.id = id
+                    model.id = id.toString()
                     model.folderName = name
                     model.videoPath = path
-                    model.uriStr = it.getString(uriIndex)
 
                     val timeLimit = VideoPickerUI.getPickerItem().timeLimit
-                    if (duration <= timeLimit)
-                        videoMap[count++.toString()] = model
+                    val sizeLimit = VideoPickerUI.getPickerItem().sizeLimit
+                    timeLimit?.let {
+                        if (duration <= timeLimit)
+                            videoMap[id] = model
+                    }
+                    sizeLimit?.let {
+                        if (size <= sizeLimit)
+                            videoMap[id] = model
+                        else
+                            videoMap.remove(id)
+                    }
+                    if (timeLimit == null && sizeLimit == null)
+                        videoMap[id] = model
                 }
                 it.close()
             }
@@ -63,13 +70,13 @@ class VideoEx {
         }
     }
 
-    private fun filterVideosMap(videoMap: MutableMap<String, VideoModel>): MutableList<VideoModel> {
+    private fun filterVideosMap(videoMap: MutableMap<Long, VideoModel>): MutableList<VideoModel> {
         val myVideosList: MutableList<VideoModel> = arrayListOf()
         videoMap.entries.forEach {
             val model = it.value
 
             val newModel = VideoModel(
-                model.id, model.folderName, model.videoPath, false, model.uriStr, null
+                model.id, model.folderName, model.videoPath, false
             )
             myVideosList.add(newModel)
         }

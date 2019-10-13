@@ -9,7 +9,5 @@ data class VideoModel(
     var id: String? = null,
     var folderName: String? = null,
     var videoPath: String? = null,
-    var isSelected: Boolean = false,
-    var uriStr:String? = null,
-    var photoUri: Uri? = null
+    var isSelected: Boolean = false
 ) : Parcelable
