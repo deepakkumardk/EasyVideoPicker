@@ -8,9 +8,11 @@ import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.onComplete
 
 private val VIDEO_URI: Uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-private val THUMB_ID: String = MediaStore.Video.Media.MINI_THUMB_MAGIC
-private val THUMB_MINI: Int = MediaStore.Video.Thumbnails.MINI_KIND
 
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 class VideoEx {
 
     fun getAllVideos(activity: Activity?, onCompleted: (MutableList<VideoModel>) -> Unit) {

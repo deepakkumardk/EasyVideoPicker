@@ -24,7 +24,20 @@
         android:layout_height="24dp"
         android:layout_margin="4dp"
         android:src="@drawable/check_selector"
-        tools:ignore="ContentDescription" />
+        android:visibility="gone"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/image_check_center"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:src="@drawable/check_large_selector"
+        android:visibility="gone"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/small_icon"
@@ -32,7 +45,7 @@
         android:layout_height="16dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
-        android:src="@color/colorWhite"
+        android:src="@drawable/ic_video"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

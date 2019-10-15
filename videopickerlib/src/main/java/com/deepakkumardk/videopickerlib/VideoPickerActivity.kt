@@ -19,6 +19,10 @@ import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 class VideoPickerActivity : AppCompatActivity() {
     private lateinit var videoAdapter: VideoPickerAdapter
     private var itemList: MutableList<VideoModel> = mutableListOf()
@@ -101,6 +105,7 @@ class VideoPickerActivity : AppCompatActivity() {
 
     private fun addSelectedItem(model: VideoModel, view: View, opacityView: View) {
         model.isSelected = !model.isSelected
+        view.show()
         view.isSelected = model.isSelected
         opacityView.isSelected = model.isSelected
         when (model.isSelected) {

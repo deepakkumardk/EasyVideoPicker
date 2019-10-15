@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.deepakkumardk.videopickerlib.model.SelectionStyle
 import com.deepakkumardk.videopickerlib.model.VideoModel
 import com.deepakkumardk.videopickerlib.util.VideoPickerUI
 import com.deepakkumardk.videopickerlib.util.getMimeType
@@ -14,10 +15,16 @@ import com.deepakkumardk.videopickerlib.util.hide
 import com.deepakkumardk.videopickerlib.util.show
 import java.io.File
 
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 class VideoPickerAdapter(
     private val itemList: MutableList<VideoModel>,
     val listener: (VideoModel, Int, View, View) -> Unit
 ) : RecyclerView.Adapter<VideoPickerAdapter.VideoViewHolder>() {
+
+    private var selectionStyle: SelectionStyle = VideoPickerUI.getPickerItem().selectionStyle
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): VideoViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -56,9 +63,30 @@ class VideoPickerAdapter(
         }
 
         holder.opacityView.isSelected = model.isSelected
-        holder.imageCheck.isSelected = model.isSelected
-        holder.videoImage.setOnClickListener {
-            listener(model, position, holder.imageCheck, holder.opacityView)
+        when (selectionStyle) {
+            is SelectionStyle.Small -> {
+                holder.imageCheck.apply {
+                    show()
+                    isSelected = model.isSelected
+                }
+            }
+            is SelectionStyle.Large -> {
+                holder.imageCheckCenter.apply {
+                    show()
+                    isSelected = model.isSelected
+                }
+            }
+
+        }
+        holder.itemView.setOnClickListener {
+            when (selectionStyle) {
+                is SelectionStyle.Small -> listener(
+                    model, holder.adapterPosition, holder.imageCheck, holder.opacityView
+                )
+                is SelectionStyle.Large -> listener(
+                    model, holder.adapterPosition, holder.imageCheckCenter, holder.opacityView
+                )
+            }
         }
 
     }
@@ -68,6 +96,7 @@ class VideoPickerAdapter(
         val videoImage: ImageView = itemView.findViewById(R.id.video_thumbnail)
         val opacityView: View = itemView.findViewById(R.id.image_opacity)
         val imageCheck: ImageView = itemView.findViewById(R.id.image_check)
+        val imageCheckCenter: ImageView = itemView.findViewById(R.id.image_check_center)
         val imageSmallIcon: ImageView = itemView.findViewById(R.id.small_icon)
     }
 }

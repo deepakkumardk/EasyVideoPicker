@@ -1,9 +1,12 @@
 package com.deepakkumardk.videopickerlib.model
 
-import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 @Parcelize
 data class VideoModel(
     var id: String? = null,

@@ -13,7 +13,10 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 
-
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 fun View?.show() {
     this?.visibility = View.VISIBLE
 }
