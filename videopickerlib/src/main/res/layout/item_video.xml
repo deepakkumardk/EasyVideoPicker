@@ -48,4 +48,18 @@
         android:src="@drawable/ic_video"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/text_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="4dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="05:00"
+        tools:visibility="visible" />
+
 </RelativeLayout>

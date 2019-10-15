@@ -9,6 +9,7 @@ class VideoPickerItem {
     var themeResId: Int? = null
 
     var showIcon = false
+    var showDuration = false
     var timeLimit: Long? = null
     var sizeLimit: Long? = null
 

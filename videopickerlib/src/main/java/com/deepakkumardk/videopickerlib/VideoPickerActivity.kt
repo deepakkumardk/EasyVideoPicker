@@ -47,23 +47,18 @@ class VideoPickerActivity : AppCompatActivity() {
         }
 
         checkPermission()
-        fab_done.setOnClickListener {
-            val result = Intent()
-            val list = getSelectedVideos()
-            result.putExtra(EXTRA_SELECTED_VIDEOS, list)
-            setResult(Activity.RESULT_OK, result)
-            finish()
-        }
+        fab_done.setOnClickListener { sendResultIntent() }
+        setUIForSingleMode()
     }
 
     private fun initToolbar() {
-        supportActionBar?.title = "0 Selected"
+        supportActionBar?.title = getToolbarTitle()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
     }
 
     private fun setSubtitle() {
-        supportActionBar?.title = "${getSelectedVideos().size} Selected"
+        supportActionBar?.title = getToolbarTitle()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -76,16 +71,27 @@ class VideoPickerActivity : AppCompatActivity() {
         }
     }
 
+    private fun getToolbarTitle(): String {
+        return if (VideoPickerUI.getSelectionMode() == SelectionMode.Single)
+            "Select a Video"
+        else
+            "${getSelectedVideos().size} Selected"
+    }
+
+    private fun setUIForSingleMode() {
+        if (VideoPickerUI.getSelectionMode() == SelectionMode.Single) {
+            supportActionBar?.title = getToolbarTitle()
+            fab_done.hide()
+        }
+    }
+
     @Suppress("UNUSED_PARAMETER")
     private fun onItemClick(model: VideoModel, position: Int, view: View, opacityView: View) {
         when (VideoPickerUI.getPickerItem().selectionMode) {
             is SelectionMode.Single -> {
-                if (selectedVideos.size >= 1) {
-                    toast("You can't select more than 1 video")
-                    return
-                } else {
-                    addSelectedItem(model, view, opacityView)
-                }
+                model.isSelected = !model.isSelected
+                selectedVideos.add(model)
+                sendResultIntent()
             }
             is SelectionMode.Multiple -> {
                 addSelectedItem(model, view, opacityView)
@@ -161,9 +167,17 @@ class VideoPickerActivity : AppCompatActivity() {
         }
     }
 
+    private fun sendResultIntent() {
+        val result = Intent()
+        val list = getSelectedVideos()
+        result.putExtra(EXTRA_SELECTED_VIDEOS, list)
+        setResult(Activity.RESULT_OK, result)
+        finish()
+    }
+
     private fun getSelectedVideos(): ArrayList<VideoModel> {
         val list = arrayListOf<VideoModel>()
-        for (model in this.selectedVideos) {
+        for (model in selectedVideos) {
             if (model.isSelected)
                 list.add(model)
         }

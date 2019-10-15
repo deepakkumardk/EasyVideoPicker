@@ -25,10 +25,11 @@ class MainActivity : AppCompatActivity() {
             showIcon = true
             debugMode = true
             themeResId = R.style.CustomTheme
-            timeLimit = TimeUnit.MINUTES.toMillis(2)
-            sizeLimit = 10 * 1024 * 1024
+            timeLimit = TimeUnit.MINUTES.toMillis(20)
+            sizeLimit = 100 * 1024 * 1024
             selectionMode = SelectionMode.Multiple
-//            selectionStyle = SelectionStyle.Large
+            showDuration = true
+            selectionStyle = SelectionStyle.Large
         }
         EasyVideoPicker().startPickerForResult(this, item, 2001)
     }

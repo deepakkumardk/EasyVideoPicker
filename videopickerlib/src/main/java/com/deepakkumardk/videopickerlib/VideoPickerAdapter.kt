@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.deepakkumardk.videopickerlib.model.SelectionMode
 import com.deepakkumardk.videopickerlib.model.SelectionStyle
 import com.deepakkumardk.videopickerlib.model.VideoModel
-import com.deepakkumardk.videopickerlib.util.VideoPickerUI
-import com.deepakkumardk.videopickerlib.util.getMimeType
-import com.deepakkumardk.videopickerlib.util.hide
-import com.deepakkumardk.videopickerlib.util.show
+import com.deepakkumardk.videopickerlib.util.*
 import java.io.File
 
 /**
@@ -78,6 +77,16 @@ class VideoPickerAdapter(
             }
 
         }
+        if (VideoPickerUI.getSelectionMode() == SelectionMode.Single) {
+            holder.imageCheck.hide()
+        }
+        if (VideoPickerUI.getPickerItem().showDuration) {
+            holder.textDuration.show()
+            holder.textDuration.text = model.videoDuration?.toDuration()
+        } else {
+            holder.textDuration.hide()
+        }
+
         holder.itemView.setOnClickListener {
             when (selectionStyle) {
                 is SelectionStyle.Small -> listener(
@@ -98,5 +107,6 @@ class VideoPickerAdapter(
         val imageCheck: ImageView = itemView.findViewById(R.id.image_check)
         val imageCheckCenter: ImageView = itemView.findViewById(R.id.image_check_center)
         val imageSmallIcon: ImageView = itemView.findViewById(R.id.small_icon)
+        val textDuration: TextView = itemView.findViewById(R.id.text_duration)
     }
 }

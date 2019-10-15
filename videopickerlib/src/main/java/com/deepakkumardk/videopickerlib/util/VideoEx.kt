@@ -45,6 +45,7 @@ class VideoEx {
                     model.id = id.toString()
                     model.folderName = name
                     model.videoPath = path
+                    model.videoDuration = duration
 
                     val timeLimit = VideoPickerUI.getPickerItem().timeLimit
                     val sizeLimit = VideoPickerUI.getPickerItem().sizeLimit
@@ -78,7 +79,7 @@ class VideoEx {
             val model = it.value
 
             val newModel = VideoModel(
-                model.id, model.folderName, model.videoPath, false
+                model.id, model.folderName, model.videoPath, model.videoDuration, false
             )
             myVideosList.add(newModel)
         }
