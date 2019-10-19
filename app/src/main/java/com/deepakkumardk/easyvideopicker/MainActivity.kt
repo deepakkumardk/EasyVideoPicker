@@ -11,6 +11,10 @@ import com.deepakkumardk.videopickerlib.model.VideoPickerItem
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * @author Deepak Kumar
+ * @since 12/10/19
+ */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn_open_picker.setOnClickListener { openVideoPicker() }
+        btn_java_example.setOnClickListener {
+            startActivity(Intent(this, MainJavaActivity::class.java))
+        }
     }
 
     private fun openVideoPicker() {

@@ -48,7 +48,7 @@ class VideoPickerAdapter(
         if (VideoPickerUI.getShowIcon()) {
             holder.imageSmallIcon.show()
             val ex = getMimeType(model.videoPath!!)
-            if (ex == "gif") {
+            if (ex == "gif") {  //Will not work as gif are stored in MediaStore.Images.Media
                 Glide.with(context)
                     .load(R.drawable.ic_gif)
                     .into(holder.imageSmallIcon)
