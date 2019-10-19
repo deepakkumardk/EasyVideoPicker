@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity android:name=".VideoPickerActivity" />
+        <activity
+            android:name=".VideoPickerActivity"
+            android:configChanges="keyboardHidden|orientation" />
     </application>
 
 </manifest>
