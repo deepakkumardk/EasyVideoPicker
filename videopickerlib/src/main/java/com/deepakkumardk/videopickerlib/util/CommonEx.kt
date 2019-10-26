@@ -22,9 +22,11 @@ fun View?.hide() {
 }
 
 fun RecyclerView.init(context: Context) {
+    val triple = VideoPickerUI.getPickerItem().gridDecoration
     this.apply {
         hasFixedSize()
-        layoutManager = GridLayoutManager(context, 3)
+        addItemDecoration(GridSpacingItemDecoration(triple.first, triple.second, triple.third))
+        layoutManager = GridLayoutManager(context, triple.first)
     }
 }
 

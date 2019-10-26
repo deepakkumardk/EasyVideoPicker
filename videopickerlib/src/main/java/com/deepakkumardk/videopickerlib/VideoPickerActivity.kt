@@ -99,7 +99,9 @@ class VideoPickerActivity : AppCompatActivity() {
             is SelectionMode.Custom -> {
                 val custom = VideoPickerUI.getPickerItem().selectionMode as SelectionMode.Custom
                 if (selectedVideos.size >= custom.limit && !model.isSelected) {
-                    toast("You can't select more than ${custom.limit} videos")
+                    val limitMessage =
+                        VideoPickerUI.getPickerItem().limitMessage.format(custom.limit)
+                    toast(limitMessage)
                     return
                 } else {
                     addSelectedItem(model, view, opacityView)

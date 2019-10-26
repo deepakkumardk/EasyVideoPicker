@@ -35,6 +35,9 @@ class MainActivity : AppCompatActivity() {
             timeLimit = TimeUnit.MINUTES.toMillis(20)
             sizeLimit = 100 * 1024 * 1024
             selectionMode = SelectionMode.Multiple
+            gridDecoration = Triple(2, 20, true)
+            placeholder = R.color.colorPlaceholder
+            limitMessage = "Please select less than %s pictures"
             showDuration = true
             selectionStyle = SelectionStyle.Large
         }

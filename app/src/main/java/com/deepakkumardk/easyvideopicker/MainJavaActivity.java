@@ -50,6 +50,7 @@ public class MainJavaActivity extends AppCompatActivity {
         item.setShowIcon(true);
         item.setDebugMode(true);
         item.setShowDuration(true);
+        item.setLimitMessage("Please select less than %s pictures");
         item.setTimeLimit(TimeUnit.MINUTES.toMillis(100));
         item.setSelectionMode(new SelectionMode.Custom(5));
         item.setSelectionStyle(SelectionStyle.Small.INSTANCE);
@@ -58,7 +59,7 @@ public class MainJavaActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }

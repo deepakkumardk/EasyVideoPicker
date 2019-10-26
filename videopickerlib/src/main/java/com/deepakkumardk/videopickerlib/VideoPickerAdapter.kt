@@ -24,6 +24,7 @@ class VideoPickerAdapter(
 ) : RecyclerView.Adapter<VideoPickerAdapter.VideoViewHolder>() {
 
     private var selectionStyle: SelectionStyle = VideoPickerUI.getPickerItem().selectionStyle
+    private val placeholder = VideoPickerUI.getPickerItem().placeholder
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): VideoViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -39,9 +40,9 @@ class VideoPickerAdapter(
 
         Glide.with(context)
             .load(File(model.videoPath))
-            .placeholder(R.drawable.ic_image_placeholder)
-            .fallback(R.drawable.ic_image_placeholder)
-            .error(R.drawable.ic_image_placeholder)
+            .placeholder(placeholder)
+            .fallback(placeholder)
+            .error(placeholder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.videoImage)
 
