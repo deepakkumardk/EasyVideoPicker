@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import com.deepakkumardk.videopickerlib.model.VideoModel
 import com.deepakkumardk.videopickerlib.model.VideoPickerItem
 import com.deepakkumardk.videopickerlib.util.EXTRA_SELECTED_VIDEOS
+import com.deepakkumardk.videopickerlib.util.VideoEx
 import com.deepakkumardk.videopickerlib.util.VideoPickerUI
 
 /**
@@ -37,6 +38,15 @@ class EasyVideoPicker {
          */
         fun getSelectedVideos(data: Intent?): ArrayList<VideoModel>? {
             return data?.getParcelableArrayListExtra(EXTRA_SELECTED_VIDEOS)
+        }
+
+        /**
+         * Get all video list in VideoModel class
+         */
+        fun getAllVideos(activity: Activity?, onSuccess: (MutableList<VideoModel>) -> Unit) {
+            VideoEx().getAllVideos(activity) {
+                onSuccess.invoke(it)
+            }
         }
 
     }

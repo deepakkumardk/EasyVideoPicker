@@ -1,4 +1,5 @@
 # EasyVideoPicker
+[![](https://jitpack.io/v/deepakkumardk/EasyVideoPicker.svg)](https://jitpack.io/#deepakkumardk/EasyVideoPicker)
 
 An Video Picker library for Android, written purely in [Kotlin](http://kotlinlang.org).
 
@@ -38,10 +39,10 @@ If you want to start this library from a fragment just pass the fragment context
         showIcon = true
         debugMode = true
         themeResId = R.style.CustomTheme
-        timeLimit = TimeUnit.MINUTES.toMillis(20)
-        sizeLimit = 100 * 1024 * 1024
-        selectionMode = SelectionMode.Multiple
-        gridDecoration = Triple(2, 20, true)
+        timeLimit = TimeUnit.MINUTES.toMillis(20)   //(Long) max time of video in milliseconds
+        sizeLimit = 100 * 1024 * 1024       // max. size in Bytes
+        selectionMode = SelectionMode.Multiple  //Other modes are Single & Custom(limit:Int)
+        gridDecoration = Triple(2, 20, true)    //(spanCount,spacing,includeEdge)
         placeholder = R.color.colorPlaceholder
         limitMessage = "Please select less than %s pictures"
         showDuration = true
@@ -58,6 +59,16 @@ If you want to start this library from a fragment just pass the fragment context
             val list = EasyVideoPicker.getSelectedVideos(data)  //ArrayList<VideoModel>
             //Handle this list
         }
+    }
+```
+
+### Fetch Only Video list
+If you want to fetch only video list from media store and/or you don't want to use the default UI from this
+library you can also do that with this method.
+
+```kotlin
+    EasyVideoPicker.getAllVideos(this) { videoList - >
+        //Handle the videoList : MutableList<VideoModel>
     }
 ```
 
