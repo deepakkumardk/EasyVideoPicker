@@ -18,16 +18,16 @@ class EasyVideoPicker {
     fun startPickerForResult(activity: Activity?, item: VideoPickerItem, requestCode: Int) {
         VideoPickerUI.setPickerUI(item)
         val intent = Intent(activity, VideoPickerActivity::class.java)
-        activity.let {
-            it?.startActivityForResult(intent, requestCode)
+        activity?.let {
+            it.startActivityForResult(intent, requestCode)
         }
     }
 
     fun startPickerForResult(fragment: Fragment?, item: VideoPickerItem, requestCode: Int) {
         VideoPickerUI.setPickerUI(item)
         val intent = Intent(fragment?.context, VideoPickerActivity::class.java)
-        fragment.let {
-            it?.startActivityForResult(intent, requestCode)
+        fragment?.let {
+            it.startActivityForResult(intent, requestCode)
         }
     }
 

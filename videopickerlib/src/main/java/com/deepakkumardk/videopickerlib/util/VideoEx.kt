@@ -78,9 +78,8 @@ class VideoEx {
         videoMap.entries.forEach {
             val model = it.value
 
-            val newModel = VideoModel(
-                model.id, model.folderName, model.videoPath, model.videoDuration, false
-            )
+            val newModel =
+                VideoModel(model.id, model.folderName, model.videoPath, model.videoDuration)
             myVideosList.add(newModel)
         }
 

@@ -23,5 +23,4 @@ object VideoPickerUI {
 
     fun getSelectionMode() = videoPickerItem.selectionMode
 
-
 }

@@ -12,12 +12,18 @@ import android.view.MenuItem
 import android.view.View
 import com.deepakkumardk.videopickerlib.model.SelectionMode
 import com.deepakkumardk.videopickerlib.model.VideoModel
-import com.deepakkumardk.videopickerlib.util.*
+import com.deepakkumardk.videopickerlib.util.EXTRA_SELECTED_VIDEOS
+import com.deepakkumardk.videopickerlib.util.RC_READ_STORAGE
+import com.deepakkumardk.videopickerlib.util.VideoEx
+import com.deepakkumardk.videopickerlib.util.VideoPickerUI
+import com.deepakkumardk.videopickerlib.util.applyCustomTheme
+import com.deepakkumardk.videopickerlib.util.hide
+import com.deepakkumardk.videopickerlib.util.init
+import com.deepakkumardk.videopickerlib.util.log
+import com.deepakkumardk.videopickerlib.util.show
 import kotlinx.android.synthetic.main.activity_video_picker.*
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
 
 /**
  * @author Deepak Kumar
@@ -54,7 +60,7 @@ class VideoPickerActivity : AppCompatActivity() {
     private fun initToolbar() {
         supportActionBar?.title = getToolbarTitle()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back))
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
     }
 
     private fun setSubtitle() {
@@ -123,48 +129,33 @@ class VideoPickerActivity : AppCompatActivity() {
     }
 
     private fun checkPermission() {
-        val storageReadPermission = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-        when {
-            storageReadPermission -> {
-                loadVideos()
-            }
-            else -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    requestPermissions(
-                        arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), RC_READ_STORAGE
-                    )
-                }
-            }
+        val readPermission = isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val writePermission = isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if (readPermission && writePermission) {
+            loadVideos()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), RC_READ_STORAGE
+            )
         }
     }
 
+    private fun isGranted(permission: String): Boolean {
+        val perm = ContextCompat.checkSelfPermission(this, permission)
+        return perm == PackageManager.PERMISSION_GRANTED
+    }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            RC_READ_STORAGE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the contacts-related task you need to do.
-                    loadVideos()
-                } else {
-                    // permission denied, boo! Disable the functionality that depends on this permission.
-                    alert(
-                        title = "Permission Request",
-                        message = "Please allow us to show Videos."
-                    ) {
-                        yesButton { checkPermission() }
-                    }.show()
-                }
-                return
-
+        if (requestCode == RC_READ_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadVideos()
             }
         }
     }
@@ -178,12 +169,8 @@ class VideoPickerActivity : AppCompatActivity() {
     }
 
     private fun getSelectedVideos(): ArrayList<VideoModel> {
-        val list = arrayListOf<VideoModel>()
-        for (model in selectedVideos) {
-            if (model.isSelected)
-                list.add(model)
-        }
-        return list
+        val list = selectedVideos.filter { it.isSelected }.map { it }
+        return ArrayList(list)
     }
 
     private fun loadVideos() {
